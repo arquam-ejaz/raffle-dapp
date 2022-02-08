@@ -1,14 +1,18 @@
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::near_bindgen;
+use near_sdk::collections::{UnorderedMap};
+
+// constant representing 1 NEAR in yoctoNear
+const ONE_NEAR: u128 = 1_000_000_000_000_000_000_000_000;
 
 #[near_bindgen]
 #[derive(Default, BorshDeserialize, BorshSerialize)]
-pub struct Contract {
-    // SETUP CONTRACT STATE
+pub struct RaffleDapp {
+
 }
 
 #[near_bindgen]
-impl Contract {
+impl RaffleDapp {
     // ADD CONTRACT METHODS HERE
 }
 
