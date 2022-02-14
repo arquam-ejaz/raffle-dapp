@@ -204,10 +204,10 @@ impl RaffleDapp {
                     random_index = *x;
                     break;
                 }
+            }
 
-                if random_index < length {
-                    break;
-                }
+            if random_index < length {
+                break;
             }
             random_seed = env::random_seed();
             attempts += 1;
@@ -226,7 +226,7 @@ impl RaffleDapp {
         ));
 
         env::log_str(&format!(
-            "The Random number {:?} was discovered in {:?} attempts",
+            "The Random number {:?} was discovered in {:?} attempt(s)",
             random_index, attempts
         ));
 
