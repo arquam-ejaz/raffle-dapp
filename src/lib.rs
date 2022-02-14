@@ -197,6 +197,7 @@ impl RaffleDapp {
         let length = participants_vec.len() as u8;
         let mut random_seed = env::random_seed();
         let mut random_index = random_seed[0];
+        let mut attempts = 1;
         while random_index >= length {
             for x in random_seed.iter() {
                 if *x < length {
@@ -209,6 +210,7 @@ impl RaffleDapp {
                 }
             }
             random_seed = env::random_seed();
+            attempts += 1;
         }
 
         let winner_id = (participants_vec[random_index as usize].0).to_string();
@@ -221,6 +223,11 @@ impl RaffleDapp {
             "The winner for this raffle is {:?} and his confidence was {:?} NEAR",
             winner_id,
             winner_confidence / ONE_NEAR
+        ));
+
+        env::log_str(&format!(
+            "The Random number {:?} was discovered in {:?} attempts",
+            random_index, attempts
         ));
 
         for (participants_account_id, confidence) in participants_vec {
