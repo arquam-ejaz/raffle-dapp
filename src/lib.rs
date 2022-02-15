@@ -199,6 +199,8 @@ impl RaffleDapp {
         let mut random_index = random_seed[0];
         let mut attempts = 1;
         while random_index >= length {
+            env::log_str(&format!("env::random_seed = {:?}", random_seed));
+
             for x in random_seed.iter() {
                 if *x < length {
                     random_index = *x;
