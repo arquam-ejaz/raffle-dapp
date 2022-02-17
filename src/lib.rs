@@ -1,6 +1,7 @@
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::collections::UnorderedMap;
-use near_sdk::{env, near_bindgen, AccountId, Balance, Promise, Timestamp};
+use near_sdk::{env, near_bindgen, AccountId, Balance, Gas, Promise, Timestamp};
+use serde_json::json;
 
 // constant representing 1 NEAR in yoctoNear
 const ONE_NEAR: u128 = 1_000_000_000_000_000_000_000_000;
@@ -14,6 +15,7 @@ pub struct RaffleDetails {
     start: Timestamp,
     end: Timestamp,
     participants: UnorderedMap<AccountId, Balance>,
+    attempts: u8,
 }
 
 #[near_bindgen]
@@ -35,7 +37,7 @@ impl RaffleDapp {
         assert_eq!(
             env::predecessor_account_id(),
             env::current_account_id(),
-            "Only the current account can initialize the smart contract"
+            "Only the contract account can initialize the smart contract"
         );
         Self {
             raffles: UnorderedMap::new(b"r"),
@@ -44,7 +46,7 @@ impl RaffleDapp {
 
     #[payable]
     pub fn register_raffle(&mut self, start: Timestamp, end: Timestamp) {
-        // Check if the attached deposit is greater than 2 NEAR to cover gas and service fees
+        // Check if the attached deposit is greater than 2 NEAR to cover storage and service fees
         // Thus, Prize = attached depost (in NEAR) - 2 NEAR
         assert!(
             env::attached_deposit() > 2 * ONE_NEAR,
@@ -68,6 +70,7 @@ impl RaffleDapp {
             start: start * TO_FROM_NANOSECONDS,
             end: end * TO_FROM_NANOSECONDS,
             participants: UnorderedMap::new(env::sha256(&env::predecessor_account_id().as_bytes())),
+            attempts: 0,
         };
 
         self.raffles
@@ -77,7 +80,7 @@ impl RaffleDapp {
             self.raffles.get(&env::predecessor_account_id()).unwrap();
 
         env::log_str(&format!(
-            "Raffle registered succesfully for {:?} with prize money {:?} NEAR starting from {:?} till {:?}",
+            "Raffle registered succesfully for {:?} with prize money {:?} NEAR starting from {:?} ms till {:?} ms",
             env::predecessor_account_id().to_string(),
             raffle_details.prize / ONE_NEAR,
             raffle_details.start/TO_FROM_NANOSECONDS,
@@ -97,8 +100,15 @@ impl RaffleDapp {
 
         let raffle_account_id: AccountId = AccountId::try_from(raffle_id).unwrap();
 
-        assert!(
-            env::predecessor_account_id() != raffle_account_id,
+        assert_ne!(
+            env::predecessor_account_id(),
+            env::current_account_id(),
+            "The contract account cannot participate in raffles for security reasons"
+        );
+
+        assert_ne!(
+            env::predecessor_account_id(),
+            raffle_account_id,
             "You cannot participate in your own raffle"
         );
 
@@ -159,10 +169,10 @@ impl RaffleDapp {
 
     pub fn finalize_raffle(&mut self, raffle_id: String) {
         let raffle_account_id: AccountId = AccountId::try_from(raffle_id.clone()).unwrap();
-        assert_eq!(
-            raffle_account_id,
-            env::predecessor_account_id(),
-            "Only the raffle's owner can finalize their raffle"
+        assert!(
+            env::predecessor_account_id() == raffle_account_id
+                || env::predecessor_account_id() == env::current_account_id(),
+            "Only the raffle's owner or the contract account can finalize the raffle"
         );
 
         assert!(
@@ -195,24 +205,37 @@ impl RaffleDapp {
         ));
 
         let length = participants_vec.len() as u8;
-        let mut random_seed = env::random_seed();
-        let mut random_index = random_seed[0];
-        let mut attempts = 1;
-        while random_index >= length {
-            env::log_str(&format!("env::random_seed = {:?}", random_seed));
+        let random_seed = env::random_seed();
+        env::log_str(&format!("env::random_seed = {:?}", random_seed));
 
-            for x in random_seed.iter() {
-                if *x < length {
-                    random_index = *x;
-                    break;
-                }
-            }
+        let mut random_index: u8 = random_seed[0];
+        let mut found = false;
 
-            if random_index < length {
+        for x in random_seed.iter() {
+            if *x < length {
+                random_index = *x;
+                found = true;
                 break;
             }
-            random_seed = env::random_seed();
-            attempts += 1;
+        }
+
+        let mut raffle_detail: RaffleDetails = self.raffles.get(&raffle_account_id).unwrap();
+        raffle_detail.attempts += 1;
+
+        if !found {
+            self.raffles.insert(&raffle_account_id, &raffle_detail);
+            env::log_str(
+                "Failed to discover Random index in this block, searching it in the future blocks...",
+            );
+            Promise::new(env::current_account_id()).function_call(
+                "finalize_raffle".to_string(),
+                json!({ "raffle_id": raffle_account_id.to_string() })
+                    .to_string()
+                    .into_bytes(),
+                0,
+                Gas::from(env::prepaid_gas() - env::used_gas() * 2),
+            );
+            return;
         }
 
         let winner_id = (participants_vec[random_index as usize].0).to_string();
@@ -228,8 +251,8 @@ impl RaffleDapp {
         ));
 
         env::log_str(&format!(
-            "The Random number {:?} was discovered in {:?} attempt(s)",
-            random_index, attempts
+            "The Random index {:?} was discovered in {:?} attempt(s)",
+            random_index, raffle_detail.attempts
         ));
 
         for (participants_account_id, confidence) in participants_vec {
@@ -294,7 +317,7 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected = "Only the current account can initialize the smart contract")]
+    #[should_panic(expected = "Only the contract account can initialize the smart contract")]
     fn check_initialization() {
         let mut context = get_context();
         context.predecessor_account_id(alice_account_id());
@@ -394,28 +417,28 @@ mod tests {
 
         let map_vec = map.to_vec();
         let length = map_vec.len() as u8;
-        let mut random_seed = env::random_seed();
+        let random_seed = env::random_seed();
         let mut random_index = random_seed[0];
-        while random_index >= length {
-            for x in random_seed.iter() {
-                if *x < length {
-                    random_index = *x;
-                    break;
-                }
-            }
+        let mut found = false;
 
-            if random_index < length {
+        for x in random_seed.iter() {
+            if *x < length {
+                random_index = *x;
+                found = true;
                 break;
             }
-            random_seed = env::random_seed();
         }
 
-        println!(
-            "RANDOM: [{:?} , {:?}] | INDEX: {:?}",
-            map_vec[random_index as usize].0,
-            map_vec[random_index as usize].1,
-            random_index as usize
-        );
+        if !found {
+            println!("Failed to discover Random index in this block, searching it in the future blocks...");
+        } else {
+            println!(
+                "RANDOM: [{:?} , {:?}] | INDEX: {:?}",
+                map_vec[random_index as usize].0,
+                map_vec[random_index as usize].1,
+                random_index as usize
+            );
+        }
     }
 
     #[test]
