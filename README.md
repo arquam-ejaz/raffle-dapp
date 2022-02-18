@@ -27,9 +27,9 @@ The idea of this dapp is to allow organizations and individuals to organize raff
 For knowing more features of this Dapp look at the smart contract file `./src/lib.rs`
 
 
-## Prerequisite
+## Prerequisites
 
-Install [Rust](https://rustup.rs/) and [NEAR CLI](https://docs.near.org/docs/tools/near-cli#setup) globally before trying any of the above-mentioned steps.
+Install [Rust](https://rustup.rs/) and [NEAR CLI](https://docs.near.org/docs/tools/near-cli#setup) globally before trying any of the below-mentioned steps.
 
 
 ## Getting started
