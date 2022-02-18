@@ -4,7 +4,7 @@
 
 Onchain Raffle Dapp is a decentralized application built on the NEAR blockchain using Rust programming language.
 
-The idea of this dapp is to allow organizations and individuals to organize raffles in a decentralized, trust-less, fraud-proof, and transparent manner leveraging the power of blockchain and smart contracts.
+The idea of this dapp is to allow organizations and individuals to organize raffles in a decentralized, trust-less, fraud-proof, and transparent manner by leveraging the power of blockchain and smart contracts.
 
 
 ## Features
