@@ -3,6 +3,7 @@
 ## Concept
 
 Onchain Raffle Dapp is a decentralized application built on the NEAR blockchain using Rust programming language.
+
 The idea of this dapp is to allow organizations and individuals to organize raffles in a decentralized, trust-less, fraud-proof, and transparent manner leveraging the power of blockchain and smart contracts.
 
 
@@ -24,6 +25,11 @@ The idea of this dapp is to allow organizations and individuals to organize raff
 7. The raffle winner is decided randomly by leveraging the 'unbiased and unpredictable' random seed available at each block.
 
 For knowing more features of this Dapp look at the smart contract file `./src/lib.rs`
+
+
+## Prerequisite
+
+Install [Rust programming language](https://rustup.rs/) and [NEAR CLI](https://docs.near.org/docs/tools/near-cli#setup) globally before trying any of the above-mentioned steps.
 
 
 ## Getting started
