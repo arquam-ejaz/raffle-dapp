@@ -29,7 +29,7 @@ For knowing more features of this Dapp look at the smart contract file `./src/li
 
 ## Prerequisite
 
-Install [Rust programming language](https://rustup.rs/) and [NEAR CLI](https://docs.near.org/docs/tools/near-cli#setup) globally before trying any of the above-mentioned steps.
+Install [Rust](https://rustup.rs/) and [NEAR CLI](https://docs.near.org/docs/tools/near-cli#setup) globally before trying any of the above-mentioned steps.
 
 
 ## Getting started
