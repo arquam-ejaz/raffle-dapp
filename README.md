@@ -69,5 +69,3 @@ To get started with Onchain Raffle Dapp:
 10. Finalize the raffle
 
     `near call $CONTRACT_NAME finalize_raffle '{"raffle_id":"$CONTRACT_NAME"}' --accountId $CONTRACT_NAME --gas=300000000000000`
-
-Note: You should install [Rust programming language](https://rustup.rs/) and [NEAR CLI](https://docs.near.org/docs/tools/near-cli#setup) globally before trying any of the above-mentioned steps.
