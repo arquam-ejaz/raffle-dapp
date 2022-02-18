@@ -14,6 +14,7 @@ The idea of this dapp is to allow organizations and individuals to organize raff
 2. Once registered, the raffle organizer's prize money is locked till the end of the raffle.
 
 3. Onchain Raffle Dapp reserves a charge of 2 NEAR for storage and service fees from the prize money.
+   
    So, Prize money = NEAR attached - 2 NEAR
 
 4. Users can participate in the raffle, by locking at least 1 NEAR which reflects their confidence to win this raffle. The more NEAR they lock the more confident they are to win this raffle.
