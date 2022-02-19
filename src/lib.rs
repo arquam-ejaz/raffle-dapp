@@ -90,9 +90,9 @@ impl RaffleDapp {
 
     #[payable]
     pub fn participate(&mut self, raffle_id: String) {
-        // This contract allows participants to attach deposits which reflects their confidence to win this raffle
-        // The minimum attached deposit (confidence) is 1 NEAR
-        // The attached deposit will be refunded to the respective participants at the end of the raffle irrespective of them winning or loosing
+        // Users can participate in the raffle by locking at least 1 NEAR token to prevent spam.
+        // The participant's locked NEAR tokens are called 'confidence'
+        // which represents how lucky they feel to win the raffle and it plays no role while deciding the winner.
         assert!(
             env::attached_deposit() > 1 * ONE_NEAR,
             "The attached deposit (confidence) should be greater than 1 NEAR"
