@@ -2,29 +2,29 @@
 
 ## Concept
 
-Onchain Raffle Dapp is a decentralized application built on the [NEAR blockchain](https://near.org/) using [Rust](https://www.rust-lang.org/).
+Onchain Raffle Dapp is a decentralized application (dapp) built on the [NEAR blockchain](https://near.org/) using [Rust](https://www.rust-lang.org/).
 
 The idea of this dapp is to allow organizations and individuals to organize raffles in a decentralized, trust-less, fraud-proof and transparent manner by leveraging the power of blockchain and smart contracts.
 
 ###### What is 'Raffle' in the context of this Dapp?
 
 A Raffle is a contest with prize money where the winner is decided randomly purely based on luck.
-The difference between a raffle and a lottery is that in a lottery one has to spend some amount to participate in it which is non-refundable while in a raffle one has to 'lock' some amount with the smart contract till the raffle is finalized i.e till the winner is chosen randomly. After the raffle is finalized, the locked amount gets refunded to the participants irrespective of whether one win or lose.
+The difference between a raffle and a lottery is that to participate in a lottery one has to spend some amount which is non-refundable, while to participate in a raffle one has to 'lock' some amount with the smart contract till the raffle is finalized i.e till the winner is chosen randomly. After the raffle is finalized, the locked amount gets refunded to the participants irrespective of whether one win or lose.
 
 
 ## Features
 
 1. Enables organizations/individuals to register raffles with prize money greater than 2 NEAR tokens.
 
-2. Once the raffle is registered, the prize money is locked till the end of the raffle to ensure that the raffle is carried out honestly.
+2. Once the raffle is registered, the prize money is locked till the end of the raffle to ensure that the raffle is carried out fairly.
 
 3. The smart contract enables Onchain Raffle Dapp to reserve a charge of 2 NEAR tokens for storage and service fees from the attached deposit paid by the raffle organizer.
    
    `Prize money = attached NEAR tokens - 2 NEAR tokens`
 
-4. Users can participate in the raffle by locking at least 1 NEAR token to prevent spam. The participant's locked NEAR tokens are called 'confidence' which represents how lucky they feel to win the raffle and it plays no role while deciding the winner.
+4. Users can participate in the raffle by locking at least 1 NEAR token to prevent spam or duplicate entries to some extent. The participant's locked NEAR tokens plays no role while deciding the winner to conduct an unbiased raffle.
 
-5. The participant's confidence (locked NEAR tokens) will be refunded once the raffle is finalized by the raffle organizer irrespective of whether they win or lose.
+5. The participant's locked NEAR tokens will be refunded once the raffle is finalized by the raffle organizer irrespective of whether one win or lose.
 
 6. The raffle organizer can only finalize the raffle after the raffle ends.
 

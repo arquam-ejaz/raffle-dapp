@@ -90,12 +90,11 @@ impl RaffleDapp {
 
     #[payable]
     pub fn participate(&mut self, raffle_id: String) {
-        // Users can participate in the raffle by locking at least 1 NEAR token to prevent spam.
-        // The participant's locked NEAR tokens are called 'confidence'
-        // which represents how lucky they feel to win the raffle and it plays no role while deciding the winner.
+        // Users can participate in the raffle by locking at least 1 NEAR token to prevent spam or duplicate entries to some extent.
+        // The participant's locked NEAR tokens plays no role while deciding the winner to conduct an unbiased raffle.
         assert!(
-            env::attached_deposit() > 1 * ONE_NEAR,
-            "The attached deposit (confidence) should be greater than 1 NEAR"
+            env::attached_deposit() >= 1 * ONE_NEAR,
+            "The locked amount should be at least 1 NEAR"
         );
 
         let raffle_account_id: AccountId = AccountId::try_from(raffle_id).unwrap();
@@ -146,15 +145,15 @@ impl RaffleDapp {
             "The raffle has either not started yet or has finished already"
         );
 
-        let confidence = env::attached_deposit();
+        let locked_tokens = env::attached_deposit();
         raffle_details
             .participants
-            .insert(&env::predecessor_account_id(), &confidence);
+            .insert(&env::predecessor_account_id(), &locked_tokens);
 
         self.raffles.insert(&raffle_account_id, &raffle_details);
 
         env::log_str(&format!(
-            "{:?} has sucessfully participated in the raffle of {:?} with confidence: {:?} NEAR",
+            "{:?} has sucessfully participated in the raffle of {:?} with {:?} NEAR token(s) locked",
             env::predecessor_account_id().to_string(),
             raffle_account_id.to_string(),
             self.raffles
@@ -239,15 +238,15 @@ impl RaffleDapp {
         }
 
         let winner_id = (participants_vec[random_index as usize].0).to_string();
-        let winner_confidence = participants_vec[random_index as usize].1;
+        let winner_locked_tokens = participants_vec[random_index as usize].1;
 
         Promise::new(AccountId::try_from(winner_id.clone()).unwrap())
-            .transfer(raffle_detail.prize + winner_confidence);
+            .transfer(raffle_detail.prize + winner_locked_tokens);
 
         env::log_str(&format!(
-            "The winner for this raffle is {:?} and his confidence was {:?} NEAR",
+            "The winner for this raffle is {:?} and his locked tokens was {:?} NEAR",
             winner_id,
-            winner_confidence / ONE_NEAR
+            winner_locked_tokens / ONE_NEAR
         ));
 
         env::log_str(&format!(
@@ -255,11 +254,11 @@ impl RaffleDapp {
             random_index, raffle_detail.attempts
         ));
 
-        for (participants_account_id, confidence) in participants_vec {
+        for (participants_account_id, locked_tokens) in participants_vec {
             if participants_account_id.to_string() == winner_id {
                 continue;
             }
-            Promise::new(participants_account_id).transfer(confidence);
+            Promise::new(participants_account_id).transfer(locked_tokens);
         }
 
         self.raffles.remove(&raffle_account_id);
