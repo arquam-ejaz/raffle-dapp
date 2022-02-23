@@ -4,7 +4,7 @@
 
 Onchain Raffle Dapp is a decentralized application built on the [NEAR blockchain](https://near.org/) using [Rust](https://www.rust-lang.org/).
 
-The idea of this decentralized application (dapp) is to allow organizations and individuals to organize raffles in a decentralized, trust-less, fraud-proof and transparent manner by leveraging the power of blockchain and smart contracts.
+The idea of this [decentralized application](https://en.wikipedia.org/wiki/Decentralized_application) (dapp) is to allow organizations and individuals to organize raffles in a decentralized, trust-less, fraud-proof and transparent manner by leveraging the power of blockchain and smart contracts.
 
 ###### What is 'Raffle' in the context of this Dapp?
 
@@ -14,7 +14,7 @@ The difference between a raffle and a lottery is that to participate in a lotter
 
 ## Features
 
-1. Enables organizations/individuals to register raffles with prize money greater than 2 NEAR tokens.
+1. Enables organizations/individuals to register raffles with prize money greater than 2 NEAR tokens (NEAR blockchain's native tokens) by specifying the raffle start and end dates.
 
 2. Once the raffle is registered, the prize money is locked till the end of the raffle to ensure that the raffle is carried out fairly.
 
