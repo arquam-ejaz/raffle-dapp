@@ -72,8 +72,8 @@ To get started with Onchain Raffle Dapp:
 
 9. Participate in the raffle (repeat this step with different testnet accounts)
 
-    `near call $CONTRACT_NAME participate '{"raffle_id":"$CONTRACT_NAME"}' --accountId <participant account id> --amount <participant confidence in NEAR>`
+    `near call $CONTRACT_NAME participate '{"raffle_id":"'$CONTRACT_NAME'"}' --accountId <participant account id> --amount <participant's locked NEAR tokens>`
 
 10. Finalize the raffle
 
-    `near call $CONTRACT_NAME finalize_raffle '{"raffle_id":"$CONTRACT_NAME"}' --accountId $CONTRACT_NAME --gas=300000000000000`
+    `near call $CONTRACT_NAME finalize_raffle '{"raffle_id":"'$CONTRACT_NAME'"}' --accountId $CONTRACT_NAME --gas=300000000000000`
