@@ -53,7 +53,7 @@ impl RaffleDapp {
             "Prize money should be greater than 2 NEAR"
         );
 
-        // Allowing to register only one raffle per account to avoid spamming,
+        // Allowing to register only one raffle per account,
         // they can register a new raffle after their current raffle ends
         assert!(
             self.raffles.get(&env::predecessor_account_id()).is_none(),
@@ -428,6 +428,7 @@ mod tests {
             }
         }
 
+        // Should print RANDOM: ["alice 2" , 2] | INDEX: 1
         if !found {
             println!("Failed to discover Random index in this block, searching it in the future blocks...");
         } else {
