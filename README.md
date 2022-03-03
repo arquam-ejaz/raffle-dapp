@@ -11,6 +11,14 @@ The idea of this [decentralized application](https://en.wikipedia.org/wiki/Decen
 A Raffle is a contest with prize money where the winner is decided randomly purely based on luck.
 The difference between a raffle and a lottery is that to participate in a lottery one has to spend some amount which is non-refundable, while to participate in a raffle one has to 'lock' some amount with the smart contract till the raffle is finalized i.e till the winner is chosen randomly. After the raffle is finalized, the locked amount gets refunded to the participants irrespective of whether one win or lose.
 
+## Live Code Review
+
+[![Live Code Review - Onchain Raffle Dapp]](https://www.loom.com/share/5c0fadb40be3458997dc8fbbac8b1b94)
+
+## Dapp Demo
+
+[![Dapp Demo - Onchain Raffle Dapp]](https://www.loom.com/share/f698cd128125403fa71e642cd9bf7e38?sharedAppSource=personal_library)
+
 
 ## Features
 
