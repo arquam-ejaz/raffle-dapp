@@ -31,13 +31,13 @@ The difference between a raffle and a lottery is that to participate in a lotter
 
 To know more features of this Dapp look at the smart contract file [`./src/lib.rs`](https://github.com/arquam-ejaz/raffle-dapp/blob/master/src/lib.rs)
 
-## Live Code Review
+<!-- ## Live Code Review
 
 https://user-images.githubusercontent.com/48132159/156529950-64b71462-6e70-49c8-9703-11caf0b452bb.mp4
 
 ## Dapp Demo
 
-https://user-images.githubusercontent.com/48132159/156530459-661f0982-3389-4a99-9b0c-722ec642d679.mp4
+https://user-images.githubusercontent.com/48132159/156530459-661f0982-3389-4a99-9b0c-722ec642d679.mp4 -->
 
 ## Prerequisites
 
